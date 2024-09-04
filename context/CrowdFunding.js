@@ -127,7 +127,7 @@ export const CrowdFundingProvider = ({children}) => {
             setCurrentAccount(accounts[0]);
         } catch (error) {
             console.log(error);
-            throw new Error("No ethereum object");
+            alert(error.message)
         }
     }
     return (
