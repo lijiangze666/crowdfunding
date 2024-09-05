@@ -16,10 +16,12 @@ export const CrowdFundingProvider = ({children}) => {
         const web3Modal = new Web3Modal();
         const connection = await web3Modal.connect();
         const provider = new ethers.BrowserProvider(connection);
-        const signer = provider.getSigner();
+        const signer = await provider.getSigner();
         const contract = fetchContract(signer);
 
         console.log(currentAccount);
+        console.log(title, description, target, deadline);
+        console.log(contract)
         try {
             const transaction = await contract.createCampaign(
                 currentAccount,//owner
@@ -38,38 +40,39 @@ export const CrowdFundingProvider = ({children}) => {
     }
 
     const getCampaigns = async () => {
-        const provider = new ethers.JsonRpcProvider();
-        const contract = fetchContract(provider);
-        const campaigns = await contract.getCampaigns();
-        const parsedCampaigns = campaigns.map((campaign, i) => ({
-            owner: campaign.owner,
-            title: campaign.title,
-            description: campaign.description,
-            target: ethers.formatEther(campaign.target.toString()),
-            deadline: campaign.deadline.toNumber(),
-            amountCollected: ethers.formatEther(campaign.amountCollected.toString()),
-            pId: i,
-        }));
-        return parsedCampaigns;
+        // const provider = new ethers.JsonRpcProvider();
+        // const contract = fetchContract(provider);
+        // const campaigns = await contract.getCampaigns();
+        // const parsedCampaigns = campaigns.map((campaign, i) => ({
+        //     owner: campaign.owner,
+        //     title: campaign.title,
+        //     description: campaign.description,
+        //     target: ethers.formatEther(campaign.target.toString()),
+        //     deadline: campaign.deadline.toNumber(),
+        //     amountCollected: ethers.formatEther(campaign.amountCollected.toString()),
+        //     pId: i,
+        // }));
+        // console.log(parsedCampaigns)
+        // return parsedCampaigns;
     }
     const getUserCampaigns = async () => {
-        const provider = new ethers.JsonRpcProvider();
-        const contract = fetchContract(provider);
-        const campaigns = await contract.getCampaigns();
-        const accounts = await window.ethereum.request({method: 'eth_accounts'});
-        const currentUser = accounts[0];
-        //Filter the campaigns by the current user
-        const filteredCampaigns = campaigns.filter((campaign) => campaign.owner === "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266");
-        const userData = filteredCampaigns.map((campaign, i) => ({
-            owner: campaign.owner,
-            title: campaign.title,
-            description: campaign.description,
-            target: ethers.formatEther(campaign.target.toString()),
-            deadline: campaign.deadline.toNumber(),
-            amountCollected: ethers.formatEther(campaign.amountCollected.toString()),
-            pId: i,
-        }))
-        return userData;
+        // const provider = new ethers.JsonRpcProvider();
+        // const contract = fetchContract(provider);
+        // const campaigns = await contract.getCampaigns();
+        // const accounts = await window.ethereum.request({method: 'eth_accounts'});
+        // const currentUser = accounts[0];
+        // //Filter the campaigns by the current user
+        // const filteredCampaigns = campaigns.filter((campaign) => campaign.owner === "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266");
+        // const userData = filteredCampaigns.map((campaign, i) => ({
+        //     owner: campaign.owner,
+        //     title: campaign.title,
+        //     description: campaign.description,
+        //     target: ethers.formatEther(campaign.target.toString()),
+        //     deadline: campaign.deadline.toNumber(),
+        //     amountCollected: ethers.formatEther(campaign.amountCollected.toString()),
+        //     pId: i,
+        // }))
+        // return userData;
     }
     const donate = async (pId, amount) => {
         const web3Modal = new Web3Modal();
