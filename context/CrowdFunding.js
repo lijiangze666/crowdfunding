@@ -1,10 +1,19 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {ethers} from "ethers";
 import Web3Modal from 'web3modal';
 import {contractABI, contractAddress} from "./constants";
 
 export const CrowdFundingContext = React.createContext();
 
+//获取众筹合约对象
+const getCrowdFundingContract = async () => {
+    //获取provider
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    //获取signer
+    const signer = await provider.getSigner();
+    //获取合约对象
+    return new ethers.Contract(contractAddress, contractABI, signer);
+}
 //Gets the deployed contract instance
 const fetchContract = (signerOrProvider) => new ethers.Contract(contractAddress, contractABI, signerOrProvider);
 //Create the Provider
@@ -13,12 +22,7 @@ export const CrowdFundingProvider = ({children}) => {
     const [currentAccount, setCurrentAccount] = useState("");
     const createCampaign = async (campaign) => {
         const {title, description, target, deadline} = campaign;
-        const web3Modal = new Web3Modal();
-        const connection = await web3Modal.connect();
-        const provider = new ethers.BrowserProvider(connection);
-        const signer = await provider.getSigner();
-        const contract = fetchContract(signer);
-
+        const contract = await getCrowdFundingContract();
         console.log(currentAccount);
         console.log(title, description, target, deadline);
         console.log(contract)
@@ -40,39 +44,37 @@ export const CrowdFundingProvider = ({children}) => {
     }
 
     const getCampaigns = async () => {
-        // const provider = new ethers.JsonRpcProvider();
-        // const contract = fetchContract(provider);
-        // const campaigns = await contract.getCampaigns();
-        // const parsedCampaigns = campaigns.map((campaign, i) => ({
-        //     owner: campaign.owner,
-        //     title: campaign.title,
-        //     description: campaign.description,
-        //     target: ethers.formatEther(campaign.target.toString()),
-        //     deadline: campaign.deadline.toNumber(),
-        //     amountCollected: ethers.formatEther(campaign.amountCollected.toString()),
-        //     pId: i,
-        // }));
-        // console.log(parsedCampaigns)
-        // return parsedCampaigns;
+        const contract  = await getCrowdFundingContract()
+        const campaigns = await contract.getCampaigns();
+        const parsedCampaigns = campaigns.map((campaign, i) => ({
+            owner: campaign.owner,
+            title: campaign.title,
+            description: campaign.description,
+            target: ethers.formatEther(campaign.target.toString()),
+            deadline: campaign.deadline,
+            amountCollected: ethers.formatEther(campaign.amountCollected.toString()),
+            pId: i,
+        }));
+        // console.log(1111,parsedCampaigns)
+        return parsedCampaigns;
     }
     const getUserCampaigns = async () => {
-        // const provider = new ethers.JsonRpcProvider();
-        // const contract = fetchContract(provider);
-        // const campaigns = await contract.getCampaigns();
-        // const accounts = await window.ethereum.request({method: 'eth_accounts'});
-        // const currentUser = accounts[0];
-        // //Filter the campaigns by the current user
-        // const filteredCampaigns = campaigns.filter((campaign) => campaign.owner === "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266");
-        // const userData = filteredCampaigns.map((campaign, i) => ({
-        //     owner: campaign.owner,
-        //     title: campaign.title,
-        //     description: campaign.description,
-        //     target: ethers.formatEther(campaign.target.toString()),
-        //     deadline: campaign.deadline.toNumber(),
-        //     amountCollected: ethers.formatEther(campaign.amountCollected.toString()),
-        //     pId: i,
-        // }))
-        // return userData;
+        const contract  = await getCrowdFundingContract()
+        const campaigns = await contract.getCampaigns();
+        const accounts = await window.ethereum.request({method: 'eth_accounts'});
+        const currentUser = accounts[0];
+        //Filter the campaigns by the current user
+        const filteredCampaigns = campaigns.filter((campaign) => campaign.owner === currentUser);
+        const userData = filteredCampaigns.map((campaign, i) => ({
+            owner: campaign.owner,
+            title: campaign.title,
+            description: campaign.description,
+            target: ethers.formatEther(campaign.target.toString()),
+            deadline: campaign.deadline,
+            amountCollected: ethers.formatEther(campaign.amountCollected.toString()),
+            pId: i,
+        }))
+        return userData;
     }
     const donate = async (pId, amount) => {
         const web3Modal = new Web3Modal();

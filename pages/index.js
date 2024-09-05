@@ -34,11 +34,11 @@ const Index = () => {
                   setOpenModel={setOpenModel}
                   setDonate={setDonateCampaign}
             />
-            <Card title="Your Created Campaign"
-                  allCampaign={userCampaign}
-                  setOpenModel={setOpenModel}
-                  setDonate={setDonateCampaign}
-            />
+            {/*<Card title="Your Created Campaign"*/}
+            {/*      allCampaign={userCampaign}*/}
+            {/*      setOpenModel={setOpenModel}*/}
+            {/*      setDonate={setDonateCampaign}*/}
+            {/*/>*/}
             {openModel &&
                 <PopUp
                     setOpenModel={setOpenModel}
