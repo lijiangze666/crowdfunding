@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.11",
     "dotenv": "^16.4.5",
     "ethers": "^6.13.2",
     "hardhat": "^2.22.10",
