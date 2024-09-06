@@ -25,7 +25,6 @@ const Index = () => {
     }, []);
     const [openModel, setOpenModel] = useState(false);
     const [donateCampaign, setDonateCampaign] = useState('');
-    console.log(donateCampaign);
     return (
         <>
             <Hero titleData={titleData} createCampaign={createCampaign} />

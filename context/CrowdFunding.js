@@ -55,7 +55,6 @@ export const CrowdFundingProvider = ({children}) => {
             amountCollected: ethers.formatEther(campaign.amountCollected.toString()),
             pId: i,
         }));
-        // console.log(1111,parsedCampaigns)
         return parsedCampaigns;
     }
     const getUserCampaigns = async () => {
@@ -77,11 +76,12 @@ export const CrowdFundingProvider = ({children}) => {
         return userData;
     }
     const donate = async (pId, amount) => {
-        const web3Modal = new Web3Modal();
-        const connection = await web3Modal.connect();
-        const provider = new ethers.BrowserProvider(connection);
-        const signer = provider.getSigner();
-        const contract = fetchContract(signer);
+        // const web3Modal = new Web3Modal();
+        // const connection = await web3Modal.connect();
+        // const provider = new ethers.BrowserProvider(connection);
+        // const signer = provider.getSigner();
+        // const contract = fetchContract(signer);
+        const contract  = await getCrowdFundingContract()
         const transaction = await contract.donateToCampaign(pId, {
             value: ethers.parseEther(amount),
         });
@@ -91,8 +91,7 @@ export const CrowdFundingProvider = ({children}) => {
     }
 
     const getDonations = async (pId) => {
-        const provider = new ethers.JsonRpcProvider();
-        const contract = fetchContract(provider);
+        const contract  = await getCrowdFundingContract()
         const donations = await contract.getDonators(pId);
         const numberOfDonations = donations[0].length;
         const parsedDonations = [];
