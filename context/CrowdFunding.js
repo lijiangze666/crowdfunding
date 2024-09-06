@@ -23,7 +23,7 @@ export const CrowdFundingProvider = ({children}) => {
     const createCampaign = async (campaign) => {
         const {title, description, target, deadline} = campaign;
         const contract = await getCrowdFundingContract();
-        console.log(currentAccount);
+        console.log('createCampaign currentAccount',currentAccount);
         console.log(title, description, target, deadline);
         console.log(contract)
         try {
@@ -60,10 +60,15 @@ export const CrowdFundingProvider = ({children}) => {
     const getUserCampaigns = async () => {
         const contract  = await getCrowdFundingContract()
         const campaigns = await contract.getCampaigns();
+        // console.log('campaigns', campaigns);
         const accounts = await window.ethereum.request({method: 'eth_accounts'});
+        // console.log('accounts', accounts);
         const currentUser = accounts[0];
+        // console.log('currentUser', currentUser);
         //Filter the campaigns by the current user
-        const filteredCampaigns = campaigns.filter((campaign) => campaign.owner === currentUser);
+
+        const filteredCampaigns = campaigns.filter((item) => item[0].toLowerCase() === currentUser.toLowerCase());
+        // console.log('filteredCampaigns', filteredCampaigns);
         const userData = filteredCampaigns.map((campaign, i) => ({
             owner: campaign.owner,
             title: campaign.title,

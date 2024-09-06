@@ -12,7 +12,7 @@ const Index = () => {
         getDonations
     } = useContext(CrowdFundingContext);
     const [allCampaign, setAllCampaign] = useState([]);
-    const [userCampaign, setUserCampaign] = useState({});
+    const [userCampaign, setUserCampaign] = useState([]);
     useEffect(() => {
         const getCampaignsData = getCampaigns();
         const getUserCampaignsData = getUserCampaigns();
@@ -33,11 +33,11 @@ const Index = () => {
                   setOpenModel={setOpenModel}
                   setDonate={setDonateCampaign}
             />
-            {/*<Card title="Your Created Campaign"*/}
-            {/*      allCampaign={userCampaign}*/}
-            {/*      setOpenModel={setOpenModel}*/}
-            {/*      setDonate={setDonateCampaign}*/}
-            {/*/>*/}
+            <Card title="Your Created Campaign"
+                  allCampaign={userCampaign}
+                  setOpenModel={setOpenModel}
+                  setDonate={setDonateCampaign}
+            />
             {openModel &&
                 <PopUp
                     setOpenModel={setOpenModel}
