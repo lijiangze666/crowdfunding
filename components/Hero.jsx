@@ -4,7 +4,7 @@ const Hero = ({titleData, createCampaign}) => {
     const [campaign, setCampaign] = useState({
         title: "",
         description: "",
-        target: "",
+        targetAmount: "",
         deadline: ""
     });
     const createMewCampaign = async (e) => {
@@ -107,13 +107,13 @@ const Hero = ({titleData, createCampaign}) => {
                                         Target Amount
                                         <input
                                             onChange={(e) => {
-                                                setCampaign({...campaign, target: e.target.value})
+                                                setCampaign({...campaign, targetAmount: e.target.value})
                                             }}
                                             type="text"
-                                            name="target"
+                                            name="targetAmount"
                                             required
-                                            id="target"
-                                            placeholder="target"
+                                            id="targetAmount"
+                                            placeholder="Target Amount"
                                             className="flex-grow w-full h-12  px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none
                                             focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline"/>
                                     </div>

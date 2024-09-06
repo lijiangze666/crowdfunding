@@ -21,17 +21,17 @@ export const CrowdFundingProvider = ({children}) => {
     const titleData = "Crowd Funding Contract";
     const [currentAccount, setCurrentAccount] = useState("");
     const createCampaign = async (campaign) => {
-        const {title, description, target, deadline} = campaign;
+        const {title, description, targetAmount, deadline} = campaign;
         const contract = await getCrowdFundingContract();
         console.log('createCampaign currentAccount',currentAccount);
-        console.log(title, description, target, deadline);
+        console.log(title, description, targetAmount, deadline);
         console.log(contract)
         try {
             const transaction = await contract.createCampaign(
                 currentAccount,//owner
                 title,//title
                 description,//description
-                ethers.parseUnits(target, 18),//target
+                ethers.parseUnits(targetAmount, 18),//target
                 new Date(deadline).getTime()//deadline
             );
             //Wait for the transaction to be mined
